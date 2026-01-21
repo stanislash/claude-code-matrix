@@ -1,0 +1,307 @@
+/* Matrix Terminal Styles - Blue Theme */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --matrix-blue: #00bfff;
+    --matrix-blue-dim: #003366;
+    --matrix-blue-mid: #0088cc;
+    --matrix-black: #000000;
+    --matrix-dark: rgba(0, 10, 20, 0.95);
+}
+
+@font-face {
+    font-family: 'Matrix';
+    src: local('Courier New'), local('Consolas'), local('Monaco');
+}
+
+body {
+    background-color: var(--matrix-black);
+    font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+    color: var(--matrix-blue);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow: hidden;
+}
+
+/* Matrix Rain Canvas */
+#matrixCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Terminal Container */
+.terminal-container {
+    width: 100%;
+    max-width: 1200px;
+    height: 90vh;
+    max-height: 800px;
+    background-color: rgba(0, 0, 0, 0.85);
+    border: 2px solid var(--matrix-blue);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    box-shadow:
+        0 0 10px var(--matrix-blue-dim),
+        0 0 20px var(--matrix-blue-dim),
+        0 0 40px rgba(0, 191, 255, 0.1),
+        inset 0 0 50px rgba(0, 191, 255, 0.03);
+}
+
+/* Terminal Header */
+.terminal-header {
+    background-color: var(--matrix-dark);
+    border-bottom: 1px solid var(--matrix-blue);
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.terminal-title {
+    font-size: 14px;
+    font-weight: bold;
+    text-shadow: 0 0 10px var(--matrix-blue);
+    letter-spacing: 2px;
+}
+
+.terminal-status {
+    font-size: 12px;
+    color: var(--matrix-blue);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* CRT Scanline Effect */
+.scanline {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15),
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    z-index: 10;
+}
+
+/* Message Window */
+.message-window {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Custom Scrollbar */
+.message-window::-webkit-scrollbar {
+    width: 8px;
+}
+
+.message-window::-webkit-scrollbar-track {
+    background: var(--matrix-black);
+    border-left: 1px solid var(--matrix-blue-dim);
+}
+
+.message-window::-webkit-scrollbar-thumb {
+    background: var(--matrix-blue-dim);
+    border-radius: 4px;
+}
+
+.message-window::-webkit-scrollbar-thumb:hover {
+    background: var(--matrix-blue-mid);
+}
+
+/* Messages */
+.message {
+    font-size: 14px;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.message .timestamp {
+    color: var(--matrix-blue-dim);
+    margin-right: 8px;
+}
+
+.message .prefix {
+    color: var(--matrix-blue-mid);
+    margin-right: 5px;
+}
+
+.message .content {
+    color: var(--matrix-blue);
+}
+
+.user-message .prefix {
+    color: var(--matrix-blue);
+}
+
+.system-message .content {
+    text-shadow: 0 0 5px var(--matrix-blue);
+}
+
+/* Typing Animation */
+.typing-indicator {
+    display: inline-block;
+}
+
+.typing-indicator::after {
+    content: '█';
+    animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* Input Area */
+.input-area {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-top: 1px solid var(--matrix-blue);
+    background-color: var(--matrix-dark);
+    gap: 10px;
+}
+
+.input-prefix {
+    font-size: 16px;
+    color: var(--matrix-blue);
+    text-shadow: 0 0 10px var(--matrix-blue);
+}
+
+#userInput {
+    flex: 1;
+    background-color: transparent;
+    border: none;
+    color: var(--matrix-blue);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    caret-color: var(--matrix-blue);
+}
+
+#userInput::placeholder {
+    color: var(--matrix-blue-dim);
+}
+
+#sendButton {
+    background-color: transparent;
+    border: 1px solid var(--matrix-blue);
+    color: var(--matrix-blue);
+    font-family: inherit;
+    font-size: 12px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px var(--matrix-blue);
+}
+
+#sendButton:hover {
+    background-color: var(--matrix-blue);
+    color: var(--matrix-black);
+    box-shadow: 0 0 15px var(--matrix-blue);
+}
+
+#sendButton:active {
+    transform: scale(0.95);
+}
+
+/* Error Message */
+.error-message .content {
+    color: #ff3333;
+    text-shadow: 0 0 5px #ff3333;
+}
+
+/* Loading State */
+.loading-message .content {
+    color: var(--matrix-blue-mid);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    .terminal-container {
+        height: 95vh;
+        max-height: none;
+        border-radius: 0;
+    }
+
+    .terminal-header {
+        padding: 8px 12px;
+    }
+
+    .terminal-title {
+        font-size: 12px;
+    }
+
+    .message {
+        font-size: 12px;
+    }
+
+    .input-area {
+        padding: 10px;
+    }
+
+    #sendButton {
+        padding: 8px 12px;
+        font-size: 11px;
+    }
+}
+
+/* Glitch Effect (Optional - can be triggered on special events) */
+@keyframes glitch {
+    0% {
+        transform: translate(0);
+    }
+    20% {
+        transform: translate(-2px, 2px);
+    }
+    40% {
+        transform: translate(-2px, -2px);
+    }
+    60% {
+        transform: translate(2px, 2px);
+    }
+    80% {
+        transform: translate(2px, -2px);
+    }
+    100% {
+        transform: translate(0);
+    }
+}
+
+.glitch {
+    animation: glitch 0.3s ease;
+}
